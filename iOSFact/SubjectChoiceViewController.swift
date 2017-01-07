@@ -120,6 +120,9 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
             subject.name = subjectName.text
             subject.icon = pickerContent
             coreData.saveContext()
+            self.dismiss(animated: true, completion: { () -> Void in
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshList"), object: nil)
+            })
         }
         else
         {
@@ -127,6 +130,7 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }
+ 
         
     }
     
