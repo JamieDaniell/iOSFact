@@ -16,22 +16,45 @@ let screenWidth = UIScreen.main.bounds.width
 class HomeCollectionViewController: UICollectionViewController
 {
     
-    private var activeCell : HomeCollectionViewCell!
+    var activeCell : HomeCollectionViewCell? = nil
     var deleteIsShowing: Bool = false
-    var subjects = ["Maths": "Leopard", "German": "Starfish" , "French" : "Leopard" , "Geography" : "Sheep"]
+    var subjects: [String: String] = ["Maths": "Leopard", "German": "Starfish" , "French" : "Leopard" , "Geography" : "Sheep"]
+    let coreData = CoreData()
+    let subjectRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
     
     func fetchSubjects()
     {
-        let coreData = CoreData()
-        let subjectRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
         do
         {
             
             let subjectResults = try coreData.managedObjectContext.fetch(subjectRequest) as! [Subject]
             for subject in subjectResults
             {
-                subjects[subject.name!] = subject.icon
+                subjects.updateValue(subject.icon!, forKey: subject.name!)
             }
+        }
+        catch
+        {
+            print("error fetching subjects")
+        }
+    }
+    func deleteSubject(key: String)
+    {
+        do
+        {
+            let subjectResults = try coreData.managedObjectContext.fetch(subjectRequest) as! [Subject]
+            for subject in subjectResults
+            {
+                if subject.name! == key
+                {
+                    print("Subject Name: \(subject.name)")
+                    coreData.managedObjectContext.delete(subject)
+                    coreData.saveContext()
+                    subjects.removeValue(forKey: key)
+                    
+                }
+            }
+            
         }
         catch
         {
@@ -40,9 +63,9 @@ class HomeCollectionViewController: UICollectionViewController
     }
     func refreshList()
     {
-        print("X")
         fetchSubjects()
         self.collectionView?.reloadData()
+        print("Refershed Subjects: \(subjects)")
         
     }
     override func viewDidLoad()
@@ -163,10 +186,6 @@ class HomeCollectionViewController: UICollectionViewController
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        if deleteIsShowing
-        {
-            
-        }
         self.performSegue(withIdentifier: "ToQuestions", sender: collectionView.cellForItem(at: indexPath))
     }
     //func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
@@ -258,23 +277,50 @@ class HomeCollectionViewController: UICollectionViewController
     }
     func userDidPressDelete(sender: UISwipeGestureRecognizer)
     {
+        
         let point = sender.location(in: collectionView)
+        let cell = getCellAtPoint(point: point) as! HomeCollectionViewCell
         if deleteIsShowing
         {
-            let activeCell = getCellAtPoint(point: point) as! HomeCollectionViewCell
-            let cellFrame = activeCell.frame
-            let rect = CGRect( x: cellFrame.origin.x + cellFrame.width/2, y: cellFrame.origin.y, width: screenWidth/4, height: screenWidth/2)
-            //print("cellFrame: \(cellFrame)")
-            //print("rect: \(rect)")
-            //print("point: \(point)")
-            if rect.contains(point)
+            if (cell == nil || cell == activeCell)
             {
-                // If swipe point is in the cell delete it
-                
-                let indexPath = collectionView?.indexPath(for: activeCell)
-                print("Removed")
+            
+                let activeCell = getCellAtPoint(point: point) as! HomeCollectionViewCell
+                let cellFrame = activeCell.frame
+                let rect = CGRect( x: cellFrame.origin.x + cellFrame.width/2, y: cellFrame.origin.y, width: screenWidth/4, height: screenWidth/2)
+                //print("cellFrame: \(cellFrame)")
+                //print("rect: \(rect)")+
+                //print("point: \(point)")
+                if rect.contains(point)
+                {
+                    // If swipe point is in the cell delete it
+                    let activeIndexPath = collectionView?.indexPath(for: activeCell)
+                    let cellKey = activeCell.cellTitle.text
+                    let alert = UIAlertController(title: "Delete Subject", message: "Are you sure you want to delete subject?", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { action in
+                        self.deleteSubject(key: cellKey!)
+                        //self.collectionView?.deleteItems(at: [activeIndexPath!])
+                        self.refreshList()
+                        //print(self.subjects)
+                    }))
+                    alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+            else if activeCell != cell // if you have clicked on another cell
+            {
+                // It's not the same cell that is swiped, so the previously selected cell will get unswiped and the new swiped.
+                UIView.animate(withDuration: 0.5, animations:
+                    {
+                       self.activeCell?.titleCellView.transform = CGAffineTransform.identity
+                       // cell.titleCellView.transform = CGAffineTransform(translationX: -cell.frame.width/2, y: 0)
+                }, completion: nil )
+                activeCell = nil
+                deleteIsShowing = false
                 
             }
+            
+            
         }
         else
         {
@@ -290,57 +336,20 @@ class HomeCollectionViewController: UICollectionViewController
         let duration = 0.5
         
         print("Left swipe: \(point)")
-        //Bug here
+        //If the active cell is equal to nil
         if(activeCell == nil)
         {
             print("nil clause")
+            // get the active cell
             activeCell = getCellAtPoint(point: point) as! HomeCollectionViewCell!
-            
+            // perform animation to show delete
             UIView.animate(withDuration: duration, animations:
                 {
-                    self.activeCell.titleCellView.transform = CGAffineTransform(translationX: -self.activeCell.frame.width/2, y: 0)
+                    self.activeCell?.titleCellView.transform = CGAffineTransform(translationX: -(self.activeCell?.frame.width)! / 2, y: 0)
                 });
-            
+            // delete is now showing
             deleteIsShowing = true
             
-        }
-        else
-        {
-            // Getting the cell at the point
-            let cell = getCellAtPoint(point: point) as! HomeCollectionViewCell
-            print("else clause")
-            
-            // If the cell is the previously swiped cell, or nothing assume its the previously one.
-            if (cell == nil || cell == activeCell)
-            {
-                // To target the cell after that animation I test if the point of the swiping exists inside the now twice as tall cell frame
-                let cellFrame = activeCell.frame
-                let rect = CGRect( x: cellFrame.origin.x - cellFrame.width, y: cellFrame.origin.y, width: screenWidth, height: screenWidth)
-                if rect.contains(point)
-                {
-                    // If swipe point is in the cell delete it
-                    
-                    let indexPath = collectionView?.indexPath(for: activeCell)
-                    print("Removed")
-                    
-                }
-                // If another cell is swiped
-            }
-            else if activeCell != cell
-            {
-                // It's not the same cell that is swiped, so the previously selected cell will get unswiped and the new swiped.
-                UIView.animate(withDuration: duration, animations:
-                    {
-                        self.activeCell.titleCellView.transform = CGAffineTransform.identity
-                        cell.titleCellView.transform = CGAffineTransform(translationX: -cell.frame.width/2, y: 0)
-                    }, completion:
-                    {
-                        (Void) in
-                        
-                        self.activeCell = cell as? HomeCollectionViewCell!
-                    })
-                
-            }
         }
     }
     func userDidSwipeBackRight()
@@ -352,7 +361,7 @@ class HomeCollectionViewController: UICollectionViewController
             
             UIView.animate(withDuration: duration, animations:
             {
-                self.activeCell.titleCellView.transform = CGAffineTransform.identity
+                self.activeCell?.titleCellView.transform = CGAffineTransform.identity
             }, completion:
             {
                 (Void) in
