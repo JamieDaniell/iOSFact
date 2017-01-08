@@ -7,14 +7,40 @@
 //
 
 import UIKit
+import CoreData
 
 class AnswerViewController: UIViewController
 {
-
+    @IBOutlet weak var answerText: UILabel!
+    var questions: [Question]?
+    func fetchAnswer()
+    {
+        let coreData = CoreData()
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+        // Need to add AND subject
+        request.predicate = NSPredicate(format: "questionContent = %@", currentQuestion)
+        do
+        {
+            if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
+            {
+                questions = results as! [Question]
+            }
+            else
+            {
+                print("no values")
+            }
+            
+        }
+        catch
+        {
+            fatalError("Error fetching questions")
+        }
+    }
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
+        fetchAnswer()
+        answerText.text = questions?[0].answerContent
         // Do any additional setup after loading the view.
     }
 

@@ -9,7 +9,7 @@
     </entity>
     <entity name="Subject" representedClassName="Subject" syncable="YES">
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" storedInTruthFile="YES" syncable="YES"/>
         <relationship name="questions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Question" inverseName="subject" inverseEntity="Question" syncable="YES"/>
     </entity>
     <elements>

@@ -7,13 +7,19 @@
 //
 
 import UIKit
-var currentQuestion = ""
-class QuestionTableViewController: UITableViewController
+import CoreData
+
+var currentQuestion: String = ""
+var questionSubject: String = "Happy"
+
+class QuestionTableViewController: UITableViewController 
 {
 
-    var subject: String = ""
-    
-    let questions = ["When did contantinople fall?" , "How many wives did Henry VIII have?" , "Who is the most great?" , "Is this app great or what?"]
+    let coreData = CoreData()
+    var managedObjectContext: NSManagedObjectContext!
+    var questions: [Question]? = []
+    var results: [NSManagedObject]? 
+    //let questions = ["When did contantinople fall?" , "How many wives did Henry VIII have?" , "Who is the most great?" , "Is this app great or what?"]
 
 
     @IBAction func dismissView(_ sender: Any)
@@ -24,16 +30,17 @@ class QuestionTableViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
+        loadQuestions()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        print(subject)
+        print(questionSubject)
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -48,23 +55,62 @@ class QuestionTableViewController: UITableViewController
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return questions.count
+        return questions!.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         var cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath as IndexPath)
         
-        cell.textLabel?.text = questions[indexPath.row]
+        cell.textLabel?.text = questions?[indexPath.row].questionContent
         
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let selectedQuestion = questions[indexPath.row]
-        currentQuestion = selectedQuestion
+        let selectedQuestion = questions?[indexPath.row]
+        currentQuestion = (selectedQuestion?.questionContent!)!
     }
+    
+    func loadQuestions()
+    {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+        request.predicate = NSPredicate(format: "subject.name = %@", questionSubject)
+        do
+        {
+            if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
+            {
+                questions = results as! [Question]
+                self.tableView.reloadData()
+            }
+            else
+            {
+                print("no values")
+            }
+            
+        }
+        catch
+        {
+            fatalError("Error fetching questions")
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

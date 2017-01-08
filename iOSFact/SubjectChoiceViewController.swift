@@ -15,6 +15,10 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
     @IBOutlet weak var subjectName: UITextField!
     @IBOutlet weak var pickerView: UIPickerView!
     var pickerContent: String = ""
+    var SubjectResults: [Subject]?
+    var unique: Bool = true
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -35,7 +39,7 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-        return 11
+        return 16
     }
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView
     {
@@ -62,11 +66,21 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         case 8:
             myImageView.image = UIImage(named:"Sheep")
         case 9:
-            myImageView.image = UIImage(named:"Sstarfish")
+            myImageView.image = UIImage(named:"Starfish")
         case 10:
             myImageView.image = UIImage(named:"Leopard")
+        case 11:
+            myImageView.image = UIImage(named:"Lion")
+        case 12:
+            myImageView.image = UIImage(named:"Pelican")
+        case 13:
+            myImageView.image = UIImage(named:"Wolf")
+        case 14:
+            myImageView.image = UIImage(named:"KiwiBird")
+        case 15:
+            myImageView.image = UIImage(named:"Beaver")
         default:
-            myImageView.image = nil
+            myImageView.image = UIImage(named:"Lion")
         }
         myView.addSubview(myImageView)
         return myView
@@ -96,11 +110,21 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         case 8:
             pickerContent = "Sheep"
         case 9:
-            pickerContent = "Sstarfish"
+            pickerContent = "Starfish"
         case 10:
             pickerContent = "Leopard"
+        case 11:
+            pickerContent = "Lion"
+        case 12:
+            pickerContent = "Pelican"
+        case 13:
+            pickerContent = "Wolf"
+        case 14:
+            pickerContent = "KiwiBird"
+        case 15:
+            pickerContent = "Beaver"
         default:
-            pickerContent = ""
+            pickerContent = "Lion"
         }
         
     }
@@ -117,12 +141,39 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         let subject = NSEntityDescription.insertNewObject(forEntityName: "Subject", into: coreData.managedObjectContext) as! Subject
         if subjectName.text != nil
         {
-            subject.name = subjectName.text
-            subject.icon = pickerContent
-            coreData.saveContext()
-            self.dismiss(animated: true, completion: { () -> Void in
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshList"), object: nil)
-            })
+            do
+            {
+                let subjectRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
+                let subjectResults = try coreData.managedObjectContext.fetch(subjectRequest) as! [Subject]
+                for sub in subjectResults
+                {
+                    if sub.name == subjectName.text
+                    {
+                        unique = false
+                    }
+                }
+                if ( unique == true)
+                {
+                    subject.name = subjectName.text
+                    subject.icon = pickerContent
+                    coreData.saveContext()
+                    self.dismiss(animated: true, completion: { () -> Void in
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshList"), object: nil)
+                    })
+                }
+                else
+                {
+                    let alertController = UIAlertController(title: "Unique Title Needed", message: "You need to enter a different title for your subject ", preferredStyle: UIAlertControllerStyle.alert)
+                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+            catch
+            {
+                print("error fetching subjects")
+            }
+
+            
         }
         else
         {

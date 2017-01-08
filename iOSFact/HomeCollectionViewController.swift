@@ -18,7 +18,7 @@ class HomeCollectionViewController: UICollectionViewController
     
     var activeCell : HomeCollectionViewCell? = nil
     var deleteIsShowing: Bool = false
-    var subjects: [String: String] = ["Maths": "Leopard", "German": "Starfish" , "French" : "Leopard" , "Geography" : "Sheep"]
+    var subjects: [String: String] = [:]
     let coreData = CoreData()
     let subjectRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
     
@@ -98,7 +98,7 @@ class HomeCollectionViewController: UICollectionViewController
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segue.identifier == "ToQuestions", let destination = segue.destination as? QuestionTableViewController
         {
@@ -110,7 +110,7 @@ class HomeCollectionViewController: UICollectionViewController
         }
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-    }
+    }*/
     
     
     
@@ -129,10 +129,9 @@ class HomeCollectionViewController: UICollectionViewController
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        // #warning Incomplete implementation, return the number of items
+
         return self.subjects.count
     }
-
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         
@@ -145,7 +144,7 @@ class HomeCollectionViewController: UICollectionViewController
         cell.layer.cornerRadius = 5
         cell.frame.size.width = screenWidth / 2
         cell.frame.size.height = screenWidth / 2
-        
+  
         let key = Array(subjects.keys)[indexPath.row]
         let array = subjects[key]
         //print(array)
@@ -186,7 +185,7 @@ class HomeCollectionViewController: UICollectionViewController
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        self.performSegue(withIdentifier: "ToQuestions", sender: collectionView.cellForItem(at: indexPath))
+        //self.performSegue(withIdentifier: "ToQuestions", sender: collectionView.cellForItem(at: indexPath))
     }
     //func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     //{
@@ -231,28 +230,6 @@ class HomeCollectionViewController: UICollectionViewController
     //override func coll
     func respondToSwipeGesture(sender: UISwipeGestureRecognizer)
     {
-        print("HAPPY")
-        //let cell = sender.view as! UICollectionViewCell
-
-        /*if let swipeGesture = gesture as? UISwipeGestureRecognizer
-        {
-            
-            
-            switch swipeGesture.direction
-            {
-            case UISwipeGestureRecognizerDirection.right:
-                print("Swiped right")
-            case UISwipeGestureRecognizerDirection.down:
-                print("Swiped down")
-            case UISwipeGestureRecognizerDirection.left:
-                print("Swiped left")
-            case UISwipeGestureRecognizerDirection.up:
-                print("Swiped up")
-            default:
-                break
-            }
-        }
-        */
     }
     func getCellAtPoint(point: CGPoint) -> UICollectionViewCell?
     {
@@ -326,7 +303,10 @@ class HomeCollectionViewController: UICollectionViewController
         {
             let activeCell = getCellAtPoint(point: point) as! HomeCollectionViewCell
             let indexPath = collectionView?.indexPath(for: activeCell)
-            self.performSegue(withIdentifier: "ToQuestions", sender: collectionView?.cellForItem(at: indexPath!))
+            //let destination = QuestionTableViewController()
+            questionSubject = activeCell.cellTitle.text!
+            self.performSegue(withIdentifier: "ToQuestions", sender: self)
+
         }
         
     }

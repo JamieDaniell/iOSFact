@@ -255,6 +255,9 @@
                             <constraint firstItem="R3q-XC-7HU" firstAttribute="leading" secondItem="L0F-Q4-sff" secondAttribute="leadingMargin" constant="8" id="vyh-MB-UpB"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="answerText" destination="FwA-3c-Rdc" id="2zl-KS-p0U"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8ZO-G4-uez" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -375,23 +378,20 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ISC-Wq-1aB">
-                                <rect key="frame" x="16" y="346" width="343" height="216"/>
-                                <date key="date" timeIntervalSinceReferenceDate="502139160.25774401">
-                                    <!--2016-11-29 19:06:00 +0000-->
-                                </date>
-                            </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M2t-Eb-XlN">
-                                <rect key="frame" x="56" y="577" width="100" height="60"/>
+                                <rect key="frame" x="56" y="556" width="100" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="H3W-rK-slc"/>
                                     <constraint firstAttribute="height" constant="60" id="V0E-3L-Yvz"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <state key="normal" title="Submit"/>
+                                <connections>
+                                    <action selector="submitQuestion:" destination="OVj-lG-dly" eventType="touchUpInside" id="SUh-8F-3qD"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YgA-xt-OcW">
-                                <rect key="frame" x="236" y="577" width="91" height="57"/>
+                                <rect key="frame" x="236" y="556" width="91" height="57"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="84k-mQ-5en"/>
                                     <constraint firstAttribute="width" constant="91" id="iCK-YO-Rc6"/>
@@ -403,18 +403,26 @@
                                     <action selector="dismissScene:" destination="idH-8V-UN6" eventType="touchUpInside" id="a4m-D1-Q0e"/>
                                 </connections>
                             </button>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ISC-Wq-1aB">
+                                <rect key="frame" x="16" y="346" width="250" height="175"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="175" id="GcV-np-LvB"/>
+                                    <constraint firstAttribute="width" constant="250" id="WRw-FO-yIR"/>
+                                </constraints>
+                                <date key="date" timeIntervalSinceReferenceDate="502139160.25774401">
+                                    <!--2016-11-29 19:06:00 +0000-->
+                                </date>
+                            </datePicker>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ISC-Wq-1aB" firstAttribute="top" secondItem="a4F-ui-2Ce" secondAttribute="bottom" constant="8" id="0tL-3T-qXi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="8oe-sS-9TJ" secondAttribute="trailing" constant="8" id="1Wq-FR-NC3"/>
                             <constraint firstItem="YgA-xt-OcW" firstAttribute="leading" secondItem="M2t-Eb-XlN" secondAttribute="trailing" constant="80" id="6ZU-ni-XMk"/>
+                            <constraint firstItem="M2t-Eb-XlN" firstAttribute="top" secondItem="ISC-Wq-1aB" secondAttribute="bottom" constant="35" id="6fv-9T-4Ra"/>
                             <constraint firstItem="Gyn-qV-YZR" firstAttribute="leading" secondItem="7Mn-4Z-gIL" secondAttribute="leadingMargin" constant="8" id="Ahb-Xa-cDo"/>
                             <constraint firstItem="a4F-ui-2Ce" firstAttribute="leading" secondItem="7Mn-4Z-gIL" secondAttribute="leadingMargin" constant="8" id="C6j-5s-TUs"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pzA-lx-tUE" secondAttribute="trailing" constant="8" id="CHf-c2-iMG"/>
-                            <constraint firstItem="YgA-xt-OcW" firstAttribute="top" secondItem="ISC-Wq-1aB" secondAttribute="bottom" constant="15" id="HYN-t8-WBo"/>
                             <constraint firstItem="Gyn-qV-YZR" firstAttribute="top" secondItem="pzA-lx-tUE" secondAttribute="bottom" constant="16" id="LdJ-Nc-KM3"/>
-                            <constraint firstItem="M2t-Eb-XlN" firstAttribute="top" secondItem="ISC-Wq-1aB" secondAttribute="bottom" constant="15" id="M0g-qj-AhF"/>
                             <constraint firstItem="8oe-sS-9TJ" firstAttribute="top" secondItem="Gyn-qV-YZR" secondAttribute="bottom" constant="8" id="Omg-oe-ivC"/>
                             <constraint firstItem="a4F-ui-2Ce" firstAttribute="top" secondItem="8oe-sS-9TJ" secondAttribute="bottom" constant="16" id="Ow4-hG-Q8I"/>
                             <constraint firstItem="pzA-lx-tUE" firstAttribute="top" secondItem="hEa-VH-6EF" secondAttribute="bottom" constant="8" id="XEg-6Z-PRt"/>
@@ -423,10 +431,16 @@
                             <constraint firstItem="pzA-lx-tUE" firstAttribute="leading" secondItem="7Mn-4Z-gIL" secondAttribute="leadingMargin" constant="8" id="n67-hj-wPV"/>
                             <constraint firstItem="8oe-sS-9TJ" firstAttribute="leading" secondItem="7Mn-4Z-gIL" secondAttribute="leadingMargin" constant="8" id="nGK-q3-XZU"/>
                             <constraint firstItem="hEa-VH-6EF" firstAttribute="top" secondItem="bsB-jW-jmE" secondAttribute="bottom" constant="10" id="o8F-PR-QFu"/>
+                            <constraint firstItem="ISC-Wq-1aB" firstAttribute="top" secondItem="a4F-ui-2Ce" secondAttribute="bottom" constant="8" id="oce-Ob-P93"/>
                             <constraint firstItem="M2t-Eb-XlN" firstAttribute="leading" secondItem="7Mn-4Z-gIL" secondAttribute="leadingMargin" constant="40" id="pFd-3t-Ggh"/>
-                            <constraint firstAttribute="trailing" secondItem="ISC-Wq-1aB" secondAttribute="trailing" constant="16" id="rHd-Ne-qNt"/>
+                            <constraint firstItem="YgA-xt-OcW" firstAttribute="top" secondItem="ISC-Wq-1aB" secondAttribute="bottom" constant="35" id="tNV-5s-uif"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="answerText" destination="8oe-sS-9TJ" id="E8X-qv-MFS"/>
+                        <outlet property="datePick" destination="ISC-Wq-1aB" id="Vdi-Wp-Zg2"/>
+                        <outlet property="questionText" destination="pzA-lx-tUE" id="udP-kd-gew"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vK4-Fs-sT4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
