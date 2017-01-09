@@ -15,6 +15,7 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
     @IBOutlet weak var subjectName: UITextField!
     @IBOutlet weak var pickerView: UIPickerView!
     @IBOutlet weak var selectIcon: UILabel!
+    @IBOutlet weak var formView: UIView!
     var pickerContent: String = ""
     var SubjectResults: [Subject]?
     var unique: Bool = true
@@ -29,6 +30,14 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
+
+        view.backgroundColor = UIColor.clear
+        self.formView.layer.borderWidth = 0.5
+        self.formView.layer.borderColor = UIColor.lightGray.cgColor
+        self.formView.layer.cornerRadius = 5
+        //view.isOpaque = false
+        
+
     }
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {

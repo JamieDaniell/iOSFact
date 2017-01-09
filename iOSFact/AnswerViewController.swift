@@ -72,7 +72,7 @@ class AnswerViewController: UIViewController
                     question?.correctNeeded = (question?.correctNeeded)! - 1
                 }
                 coreData.saveContext()
-                if titlePageAcitive != true
+                if titlePageActive != true
                 {
                     let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionTable") as! QuestionTableViewController
                     self.navigationController?.pushViewController(questionTablePageView, animated: true)
@@ -112,7 +112,7 @@ class AnswerViewController: UIViewController
                     question?.correctNeeded = (question?.correctNeeded)! + 1
                 }
                 coreData.saveContext()
-                if titlePageAcitive != true
+                if titlePageActive != true
                 {
                     let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionTable") as! QuestionTableViewController
                     self.navigationController?.pushViewController(questionTablePageView, animated: true)

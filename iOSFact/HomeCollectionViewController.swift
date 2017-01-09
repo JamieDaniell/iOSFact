@@ -11,7 +11,7 @@ import CoreData
 private let reuseIdentifier = "Cell"
 private let deleteIdentifier = "DeleteCell"
 let screenWidth = UIScreen.main.bounds.width
-var titlePageAcitive: Bool = false
+var titlePageActive: Bool = false
 
 
 class HomeCollectionViewController: UICollectionViewController
@@ -51,8 +51,34 @@ class HomeCollectionViewController: UICollectionViewController
                 {
                     print("Subject Name: \(subject.name)")
                     coreData.managedObjectContext.delete(subject)
-                    coreData.saveContext()
-                    subjects.removeValue(forKey: key)
+                    
+                    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+                    request.predicate = NSPredicate(format: "subject.name = %@" , key)
+                    do
+                    {
+                        if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
+                        {
+                            for question in results
+                            {
+                                coreData.managedObjectContext.delete(question)
+                                
+                            }
+                            subjects.removeValue(forKey: key)
+                            coreData.saveContext()
+                            refreshList()
+
+                        }
+                        else
+                        {
+                            print("no values")
+                        }
+                        
+                    }
+                    catch
+                    {
+                        fatalError("Error fetching questions")
+                    }
+                    
                     
                 }
             }
@@ -84,7 +110,8 @@ class HomeCollectionViewController: UICollectionViewController
             // ask the first question
             // show question
             currentQuestion = questionResults[0].questionContent!
-            titlePageAcitive = true
+            print("Page Active")
+            titlePageActive = true
             let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionDetailViewController") as! QuestionDetailViewController
             self.navigationController?.pushViewController(questionTablePageView, animated: true)
             
@@ -332,7 +359,8 @@ class HomeCollectionViewController: UICollectionViewController
             let indexPath = collectionView?.indexPath(for: activeCell)
             //let destination = QuestionTableViewController()
             questionSubject = activeCell.cellTitle.text!
-            titlePageAcitive = true
+            // indicates if we wnat to go back to title or question table
+            titlePageActive = false
             self.performSegue(withIdentifier: "ToQuestions", sender: self)
 
         }
@@ -379,7 +407,13 @@ class HomeCollectionViewController: UICollectionViewController
         deleteIsShowing = false
     }
 
-    
+    //@IBAction func showCreateSubject(_ sender: Any)
+    //{
+    //    let modalViewController = SubjectChoiceViewController()
+    //    modalViewController.modalPresentationStyle = .overCurrentContext
+    //    present(modalViewController, animated: true, completion: nil)
+    //}
+   
 
 
 

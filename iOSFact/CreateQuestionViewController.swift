@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 
-class CreateQuestionViewController: UIViewController {
+class CreateQuestionViewController: UIViewController,UITextViewDelegate {
 
     @IBOutlet weak var questionText: UITextView!
     @IBOutlet weak var answerText: UITextView!
@@ -68,7 +68,54 @@ class CreateQuestionViewController: UIViewController {
         print(questionSubject)
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SubjectChoiceViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        // Make the placeholder for question
+        questionText.delegate = self
+        questionText.text = "Enter Question"
+        questionText.textColor = UIColor.lightGray
+        // make the place holder for the answer
+        answerText.delegate = self
+        answerText.text = "Enter Answer"
+        answerText.textColor = UIColor.lightGray
         // Do any additional setup after loading the view.
+    }
+    func textViewDidBeginEditing(_ textView: UITextView)
+    {
+        if textView == questionText
+        {
+            if questionText.textColor == UIColor.lightGray
+            {
+                questionText.text = nil
+                questionText.textColor = UIColor.black
+            }
+        }
+        else
+        {
+            if answerText.textColor == UIColor.lightGray
+            {
+                answerText.text = nil
+                answerText.textColor = UIColor.black
+            }
+        }
+        
+    }
+    func textViewDidEndEditing(_ textView: UITextView)
+    {
+        if textView == questionText
+        {
+            if questionText.text.isEmpty
+            {
+                questionText.text = "Enter Question"
+                questionText.textColor = UIColor.lightGray
+            }
+        }
+        else
+        {
+            if answerText.text.isEmpty
+            {
+                answerText.text = "Enter Answer"
+                answerText.textColor = UIColor.lightGray
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
