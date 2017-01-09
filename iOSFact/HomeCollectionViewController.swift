@@ -11,10 +11,12 @@ import CoreData
 private let reuseIdentifier = "Cell"
 private let deleteIdentifier = "DeleteCell"
 let screenWidth = UIScreen.main.bounds.width
+var titlePageAcitive: Bool = false
 
 
 class HomeCollectionViewController: UICollectionViewController
 {
+    
     
     var activeCell : HomeCollectionViewCell? = nil
     var deleteIsShowing: Bool = false
@@ -65,8 +67,32 @@ class HomeCollectionViewController: UICollectionViewController
     {
         fetchSubjects()
         self.collectionView?.reloadData()
-        print("Refershed Subjects: \(subjects)")
+        print("Refreshed Subjects: \(subjects)")
         
+    }
+    // Related to the Ask in the main menu --> Asks all questons with outstanding answers
+    @IBAction func askStack(_ sender: Any)
+    {
+        do
+        {
+            let questionRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+            let sortDescriptor = NSSortDescriptor(key: "correctNeeded" , ascending: false)
+            let sortDescriptors = [sortDescriptor]
+            questionRequest.sortDescriptors = sortDescriptors
+            questionRequest.predicate = NSPredicate(format: "correctNeeded != %@", 0)
+            let questionResults = try coreData.managedObjectContext.fetch(questionRequest) as! [Question]
+            // ask the first question
+            // show question
+            currentQuestion = questionResults[0].questionContent!
+            titlePageAcitive = true
+            let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionDetailViewController") as! QuestionDetailViewController
+            self.navigationController?.pushViewController(questionTablePageView, animated: true)
+            
+        }
+        catch
+        {
+            print("error fetching subjects")
+        }
     }
     override func viewDidLoad()
     {
@@ -186,6 +212,7 @@ class HomeCollectionViewController: UICollectionViewController
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         //self.performSegue(withIdentifier: "ToQuestions", sender: collectionView.cellForItem(at: indexPath))
+        
     }
     //func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     //{
@@ -305,6 +332,7 @@ class HomeCollectionViewController: UICollectionViewController
             let indexPath = collectionView?.indexPath(for: activeCell)
             //let destination = QuestionTableViewController()
             questionSubject = activeCell.cellTitle.text!
+            titlePageAcitive = true
             self.performSegue(withIdentifier: "ToQuestions", sender: self)
 
         }

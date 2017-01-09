@@ -64,8 +64,28 @@ class QuestionTableViewController: UITableViewController
     {
         var cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath as IndexPath)
         
+        
+        
         cell.textLabel?.text = questions?[indexPath.row].questionContent
-        let rowImage = UIImage(named: "ProgressCircleFour")
+        var rowImage = UIImage(named: "ProgressCircleFour")
+        if questions?[indexPath.row].correctNeeded == 0
+        {
+            rowImage = UIImage(named: "ProgressCircleZero")
+        }
+        if questions?[indexPath.row].correctNeeded == 1
+        {
+            rowImage = UIImage(named: "ProgressCircleOne")
+        }
+        else if questions?[indexPath.row].correctNeeded == 3
+        {
+            rowImage = UIImage(named: "ProgressCircleThree")
+        }
+        else if questions?[indexPath.row].correctNeeded == 2
+        {
+            rowImage = UIImage(named: "ProgressCircleTwo")
+        }
+
+        
         cell.imageView?.image = rowImage
         let itemSize = CGSize(width: 50 , height: 50)
         UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.main.scale);
@@ -125,10 +145,13 @@ class QuestionTableViewController: UITableViewController
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
     {
         var cell = tableView.cellForRow(at: indexPath)
+        /*
         let edit = UITableViewRowAction(style: .normal, title: "  Edit    ") { action, index in
-            print("favorite button tapped")
+            // Go To Form to edit the the
+            print("edit the question")
         }
         edit.backgroundColor = UIColor.orange
+         */
         
         let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
             
@@ -146,7 +169,7 @@ class QuestionTableViewController: UITableViewController
         }
         delete.backgroundColor = UIColor.red
         
-        return [edit, delete]
+        return [delete]
 
     }
     

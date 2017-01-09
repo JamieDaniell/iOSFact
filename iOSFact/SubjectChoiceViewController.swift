@@ -14,6 +14,7 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
 
     @IBOutlet weak var subjectName: UITextField!
     @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var selectIcon: UILabel!
     var pickerContent: String = ""
     var SubjectResults: [Subject]?
     var unique: Bool = true
@@ -27,7 +28,7 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         view.addGestureRecognizer(tap)
         pickerView.dataSource = self
         pickerView.delegate = self
-
+        pickerView.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
     }
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
@@ -82,6 +83,7 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         default:
             myImageView.image = UIImage(named:"Lion")
         }
+        myImageView.transform = CGAffineTransform(rotationAngle: -CGFloat.pi/2)
         myView.addSubview(myImageView)
         return myView
     }
@@ -128,7 +130,6 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         }
         
     }
-    
     
     override func didReceiveMemoryWarning()
     {

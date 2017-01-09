@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11758" systemVersion="16D17a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Question" representedClassName="Question" syncable="YES">
         <attribute name="answerContent" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="correctNeeded" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="correctNeeded" optional="YES" attributeType="Integer 16" defaultValueString="4" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="examDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="questionContent" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="subject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Subject" inverseName="questions" inverseEntity="Subject" syncable="YES"/>
