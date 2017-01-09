@@ -12,9 +12,10 @@ import CoreData
 var currentQuestion: String = ""
 var questionSubject: String = "Happy"
 
-class QuestionTableViewController: UITableViewController 
+class QuestionTableViewController: UITableViewController
 {
 
+    
     let coreData = CoreData()
     var managedObjectContext: NSManagedObjectContext!
     var questions: [Question]? = []
@@ -31,6 +32,7 @@ class QuestionTableViewController: UITableViewController
     {
         super.viewDidLoad()
         loadQuestions()
+        NotificationCenter.default.addObserver(self, selector: #selector(QuestionTableViewController.refreshQuestionList), name: NSNotification.Name(rawValue: "refreshQuestionList"), object: nil)
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -63,7 +65,14 @@ class QuestionTableViewController: UITableViewController
         var cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath as IndexPath)
         
         cell.textLabel?.text = questions?[indexPath.row].questionContent
-        
+        let rowImage = UIImage(named: "ProgressCircleFour")
+        cell.imageView?.image = rowImage
+        let itemSize = CGSize(width: 50 , height: 50)
+        UIGraphicsBeginImageContextWithOptions(itemSize, false, UIScreen.main.scale);
+        let imageRect = CGRect(x: 0, y: 0, width: itemSize.width, height: itemSize.height)
+        cell.imageView?.image!.draw(in: imageRect)
+        cell.imageView?.image! = UIGraphicsGetImageFromCurrentImageContext()!;
+        UIGraphicsEndImageContext();
         return cell
     }
 
@@ -95,9 +104,76 @@ class QuestionTableViewController: UITableViewController
             fatalError("Error fetching questions")
         }
     }
+    func refreshQuestionList()
+    {
+        loadQuestions()
+        print("questions loaded")
+        self.tableView.reloadData()
+        
+    }
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
+    {
+        return true
+    }
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
+    {
+        if editingStyle == .delete
+        {
+            print("Delete Row")
+        }
+    }
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
+    {
+        var cell = tableView.cellForRow(at: indexPath)
+        let edit = UITableViewRowAction(style: .normal, title: "  Edit    ") { action, index in
+            print("favorite button tapped")
+        }
+        edit.backgroundColor = UIColor.orange
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            
+            let cellKey = cell?.textLabel?.text
+            let alert = UIAlertController(title: "Delete Question", message: "Are you sure you want to delete question?", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { action in
+                self.deleteQuestion(key: cellKey!)
+                //self.collectionView?.deleteItems(at: [activeIndexPath!])
+                self.refreshQuestionList()
+                //print(self.subjects)
+            }))
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+
+        }
+        delete.backgroundColor = UIColor.red
+        
+        return [edit, delete]
+
+    }
     
-    
-    
+    func deleteQuestion(key: String)
+    {
+        do
+        {
+            let questionRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+            questionRequest.predicate = NSPredicate(format: "subject.name = %@", questionSubject)
+            let questionResults = try coreData.managedObjectContext.fetch(questionRequest) as! [Question]
+            for question in questionResults
+            {
+                if question.questionContent == key
+                {
+                    print("Question Name: \(question.questionContent)")
+                    coreData.managedObjectContext.delete(question)
+                    coreData.saveContext()
+                    
+                }
+            }
+            
+        }
+        catch
+        {
+            print("error fetching subjects")
+        }
+    }
     
     
     

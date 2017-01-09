@@ -43,7 +43,9 @@ class CreateQuestionViewController: UIViewController {
                             let subjects = results as! [Subject]
                             question.subject = subjects[0]
                             coreData.saveContext()
-                            print("saved")
+                            self.dismiss(animated: true, completion: { () -> Void in
+                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshQuestionList"), object: nil)
+                            })
                         }
                         else
                         {
@@ -63,6 +65,8 @@ class CreateQuestionViewController: UIViewController {
     {
         super.viewDidLoad()
         print(questionSubject)
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SubjectChoiceViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
         // Do any additional setup after loading the view.
     }
 
@@ -71,6 +75,11 @@ class CreateQuestionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func dismissKeyboard()
+    {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
 
     /*
     // MARK: - Navigation
