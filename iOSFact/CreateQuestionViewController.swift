@@ -33,7 +33,7 @@ class CreateQuestionViewController: UIViewController,UITextViewDelegate {
                     
                     question.questionContent = questionText.text
                     question.answerContent = answerText.text
-                    question.correctNeeded = 4
+                    question.correctNeeded = 0
                     question.examDate = datePick.date as NSDate?
                     let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
                     request.predicate = NSPredicate(format: "name = %@", questionSubject)

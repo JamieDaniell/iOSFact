@@ -32,9 +32,9 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         pickerView.transform = CGAffineTransform(rotationAngle: CGFloat.pi/2)
 
         view.backgroundColor = UIColor.clear
-        self.formView.layer.borderWidth = 0.5
+        self.formView.layer.borderWidth = 2.0
         self.formView.layer.borderColor = UIColor.lightGray.cgColor
-        self.formView.layer.cornerRadius = 5
+        self.formView.layer.cornerRadius = 10
         //view.isOpaque = false
         
 
@@ -151,36 +151,45 @@ class SubjectChoiceViewController: UIViewController  ,  UIPickerViewDelegate , U
         let subject = NSEntityDescription.insertNewObject(forEntityName: "Subject", into: coreData.managedObjectContext) as! Subject
         if subjectName.text != nil
         {
-            do
+            if selectIcon != nil
             {
-                let subjectRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
-                let subjectResults = try coreData.managedObjectContext.fetch(subjectRequest) as! [Subject]
-                for sub in subjectResults
+                do
                 {
-                    if sub.name == subjectName.text
+                    let subjectRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
+                    let subjectResults = try coreData.managedObjectContext.fetch(subjectRequest) as! [Subject]
+                    for sub in subjectResults
                     {
-                        unique = false
+                        if sub.name == subjectName.text
+                        {
+                            unique = false
+                        }
+                    }
+                    if ( unique == true)
+                    {
+                        subject.name = subjectName.text
+                        subject.icon = pickerContent
+                        coreData.saveContext()
+                        self.dismiss(animated: true, completion: { () -> Void in
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshList"), object: nil)
+                        })
+                    }
+                    else
+                    {
+                        let alertController = UIAlertController(title: "Unique Title Needed", message: "You need to enter a different title for your subject ", preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                        self.present(alertController, animated: true, completion: nil)
                     }
                 }
-                if ( unique == true)
+                catch
                 {
-                    subject.name = subjectName.text
-                    subject.icon = pickerContent
-                    coreData.saveContext()
-                    self.dismiss(animated: true, completion: { () -> Void in
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshList"), object: nil)
-                    })
-                }
-                else
-                {
-                    let alertController = UIAlertController(title: "Unique Title Needed", message: "You need to enter a different title for your subject ", preferredStyle: UIAlertControllerStyle.alert)
-                    alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
-                    self.present(alertController, animated: true, completion: nil)
+                    print("error fetching subjects")
                 }
             }
-            catch
+            else
             {
-                print("error fetching subjects")
+                let alertController = UIAlertController(title: "Icon Needed", message: "You need to enter an icon for your subject ", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default,handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             }
 
             

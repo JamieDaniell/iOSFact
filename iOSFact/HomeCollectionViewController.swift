@@ -97,7 +97,7 @@ class HomeCollectionViewController: UICollectionViewController
         
     }
     // Related to the Ask in the main menu --> Asks all questons with outstanding answers
-    @IBAction func askStack(_ sender: Any)
+    /*@IBAction func askStack(_ sender: Any)
     {
         do
         {
@@ -120,7 +120,7 @@ class HomeCollectionViewController: UICollectionViewController
         {
             print("error fetching subjects")
         }
-    }
+    }*/
     override func viewDidLoad()
     {
         fetchSubjects()
@@ -407,13 +407,37 @@ class HomeCollectionViewController: UICollectionViewController
         deleteIsShowing = false
     }
 
-    //@IBAction func showCreateSubject(_ sender: Any)
-    //{
-    //    let modalViewController = SubjectChoiceViewController()
-    //    modalViewController.modalPresentationStyle = .overCurrentContext
-    //    present(modalViewController, animated: true, completion: nil)
-    //}
-   
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == "homeToQuestion"
+        {
+            //Note that, originally, destinationViewController is of Type UIViewController and has to be casted as myViewController instead since that's the ViewController we trying to go to.
+            let destinationVC = segue.destination as! QuestionDetailViewController
+            do
+            {
+                let questionRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+                let sortDescriptor = NSSortDescriptor(key: "correctNeeded" , ascending: true)
+                let sortDescriptors = [sortDescriptor]
+                questionRequest.sortDescriptors = sortDescriptors
+                questionRequest.predicate = NSPredicate(format: "correctNeeded != %@", 0)
+                
+                let questionResults = try coreData.managedObjectContext.fetch(questionRequest) as! [Question]
+                // ask the first question
+                // show question
+                currentQuestion = questionResults[0].questionContent!
+                destinationVC.content  = questionResults[0].questionContent
+                titlePageActive = true
+                let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionDetailViewController") as! QuestionDetailViewController
+                //self.navigationController?.pushViewController(questionTablePageView, animated: true)
+                
+            }
+            catch
+            {
+                print("error fetching subjects")
+            }
+        }
+    }
+
 
 
 

@@ -11,6 +11,8 @@ import CoreData
 
 var currentQuestion: String = ""
 var questionSubject: String = "Happy"
+var currentQs: [Question]? = nil
+
 
 class QuestionTableViewController: UITableViewController
 {
@@ -31,22 +33,35 @@ class QuestionTableViewController: UITableViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        loadQuestions()
         NotificationCenter.default.addObserver(self, selector: #selector(QuestionTableViewController.refreshQuestionList), name: NSNotification.Name(rawValue: "refreshQuestionList"), object: nil)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        print(questionSubject)
+        NotificationCenter.default.addObserver(self, selector: #selector(QuestionTableViewController.refreshContentList), name: NSNotification.Name(rawValue: "refreshContentList"), object: nil)
+        getData()
+        
+        
     }
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == "ToQuestionDetail"
+        {
+            //Note that, originally, destinationViewController is of Type UIViewController and has to be casted as myViewController instead since that's the ViewController we trying to go to.
+            let destinationVC = segue.destination as! QuestionDetailViewController
+            
+            
+            if let indexPath = self.tableView.indexPathForSelectedRow
+            {
+                getData()
+                print("CONTENT")
+                currentQuestion = (questions?[indexPath.row].questionContent)!
+                destinationVC.content  = questions?[indexPath.row].questionContent
+            }
+            self.navigationController?.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        }
+    }
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int
@@ -63,11 +78,16 @@ class QuestionTableViewController: UITableViewController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         var cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath as IndexPath)
-        
-        
-        
+ 
+        getData()
+
+        //print("XX----------RESULTS-----------XX")
+        //print(indexPath.row)
+        //print(questions?[indexPath.row].questionContent)
+        //print(questions?[indexPath.row].correctNeeded)
+        //print("---------------------------------")
         cell.textLabel?.text = questions?[indexPath.row].questionContent
-        var rowImage = UIImage(named: "ProgressCircleFour")
+        var rowImage = UIImage(named: "ProgressCircleZero")
         if questions?[indexPath.row].correctNeeded == 0
         {
             rowImage = UIImage(named: "ProgressCircleZero")
@@ -76,14 +96,23 @@ class QuestionTableViewController: UITableViewController
         {
             rowImage = UIImage(named: "ProgressCircleOne")
         }
-        else if questions?[indexPath.row].correctNeeded == 3
-        {
-            rowImage = UIImage(named: "ProgressCircleThree")
-        }
         else if questions?[indexPath.row].correctNeeded == 2
         {
             rowImage = UIImage(named: "ProgressCircleTwo")
         }
+        else if questions?[indexPath.row].correctNeeded == 3
+        {
+            rowImage = UIImage(named: "ProgressCircleThree")
+        }
+        else if questions?[indexPath.row].correctNeeded == 4
+        {
+            rowImage = UIImage(named: "ProgressCircleFour")
+        }
+        else if questions?[indexPath.row].correctNeeded == 5
+        {
+            rowImage = UIImage(named: "ProgressCircleFive")
+        }
+        
 
         
         cell.imageView?.image = rowImage
@@ -98,20 +127,27 @@ class QuestionTableViewController: UITableViewController
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let selectedQuestion = questions?[indexPath.row]
-        currentQuestion = (selectedQuestion?.questionContent!)!
+        
     }
     
-    func loadQuestions()
+    func getData()
     {
+        let coreData = CoreData()
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+        // Need to add AND subject
         request.predicate = NSPredicate(format: "subject.name = %@", questionSubject)
         do
         {
             if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
             {
-                questions = results as! [Question]
-                self.tableView.reloadData()
+                questions = results as? [Question]
+                for x in questions!
+                {
+                    print("-------DATA TABLE------------")
+                    print(x.questionContent)
+                    print(x.correctNeeded)
+                }
+                
             }
             else
             {
@@ -124,12 +160,16 @@ class QuestionTableViewController: UITableViewController
             fatalError("Error fetching questions")
         }
     }
+
     func refreshQuestionList()
     {
-        loadQuestions()
-        print("questions loaded")
+        getData()
         self.tableView.reloadData()
-        
+    }
+    func refreshContentList()
+    {
+        getData()
+        self.tableView.reloadData()
     }
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
     {

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreData
+var passBack: [Question]? = []
 
 class QuestionDetailViewController: UIViewController
 {
@@ -14,21 +16,68 @@ class QuestionDetailViewController: UIViewController
     
     @IBOutlet weak var questionContent: UILabel!
     @IBOutlet weak var flipButton: UIImageView!
-    
+    @IBOutlet weak var cardView: UIView!
     var content: String?
+
+    let coreData = CoreData()
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        var tap = UITapGestureRecognizer(target: self, action: #selector(QuestionDetailViewController.filpTapped))
+        NotificationCenter.default.addObserver(self, selector: #selector(QuestionDetailViewController.hideCard), name: NSNotification.Name(rawValue: "hideCard"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(QuestionDetailViewController.backButton), name: NSNotification.Name(rawValue: "backButton"), object: nil)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(QuestionDetailViewController.filpTapped))
         flipButton.addGestureRecognizer(tap)
         flipButton.isUserInteractionEnabled = true
-        questionContent.text = currentQuestion
-
+        print(content)
+        questionContent.text = content
+        view.backgroundColor = UIColor.clear
+        self.cardView.layer.borderWidth = 2.0
+        self.cardView.layer.borderColor = UIColor.lightGray.cgColor
+        self.cardView.layer.cornerRadius = 10
+    }
+    @IBAction func backButton(_ sender: Any)
+    {
+        self.dismiss(animated: true, completion: nil)
     }
     func filpTapped()
     {
-        let answerPageView = self.storyboard?.instantiateViewController(withIdentifier: "AnswerSection") as! AnswerViewController
-        self.navigationController?.pushViewController(answerPageView, animated: true)
+        performSegue(withIdentifier: "toAnswer", sender: self)
+    }
+    func hideCard()
+    {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+        request.predicate = NSPredicate(format: "subject.name = %@", questionSubject)
+        do
+        {
+            if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
+            {
+                currentQs = results as! [Question]
+                self.dismiss(animated: true, completion: { () -> Void in
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshContentList"), object: nil)
+                })
+            }
+            else
+            {
+                print("no values")
+            }
+            
+        }
+        catch
+        {
+            fatalError("Error fetching questions")
+        }
+        
+
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == "toAnswer"
+        {
+            //Note that, originally, destinationViewController is of Type UIViewController and has to be casted as myViewController instead since that's the ViewController we trying to go to.
+            let destinationVC = segue.destination as! AnswerViewController
+            self.navigationController?.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -37,17 +86,7 @@ class QuestionDetailViewController: UIViewController
     
     override func viewDidAppear(_ animated: Bool)
     {
-        
 
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -8,13 +8,16 @@
 
 import UIKit
 import CoreData
+var answered: Bool = false
 
 class AnswerViewController: UIViewController
 {
     @IBOutlet weak var tickImage: UIImageView!
     @IBOutlet weak var crossImage: UIImageView!
     @IBOutlet weak var answerText: UILabel!
-    var questions: [Question]?
+    var questionData: [Question]?
+    
+    @IBOutlet weak var backView: UIView!
     func fetchAnswer()
     {
         let coreData = CoreData()
@@ -25,7 +28,7 @@ class AnswerViewController: UIViewController
         {
             if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
             {
-                questions = results as! [Question]
+                questionData = results as! [Question]
             }
             else
             {
@@ -51,8 +54,12 @@ class AnswerViewController: UIViewController
         crossImage.isUserInteractionEnabled = true
         // get data for display
         fetchAnswer()
-        answerText.text = questions?[0].answerContent
+        answerText.text = questionData?[0].answerContent
         // Do any additional setup after loading the view.
+        view.backgroundColor = UIColor.clear
+        self.backView.layer.borderWidth = 2.0
+        self.backView.layer.borderColor = UIColor.lightGray.cgColor
+        self.backView.layer.cornerRadius = 10
     }
     
     func correct()
@@ -65,23 +72,26 @@ class AnswerViewController: UIViewController
         {
             if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
             {
-                questions = results as? [Question]
-                let question = questions?[0]
-                if question?.correctNeeded != 0
+                questionData = results as? [Question]
+                let question = questionData?[0]
+                if question?.correctNeeded != 5
                 {
-                    question?.correctNeeded = (question?.correctNeeded)! - 1
+                    question?.correctNeeded = (question?.correctNeeded)! + 1
                 }
+                print("--------- Saved ------------")
                 coreData.saveContext()
                 if titlePageActive != true
                 {
-                    let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionTable") as! QuestionTableViewController
-                    self.navigationController?.pushViewController(questionTablePageView, animated: true)
+                    self.dismiss(animated: true, completion: { () -> Void in
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "hideCard"), object: nil)
+                    })
 
                 }
                 else
                 {
-                    let homeTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeCollectionViewController
-                    self.navigationController?.pushViewController(homeTablePageView, animated: true)
+                    self.dismiss(animated: true, completion: { () -> Void in
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "backButton"), object: nil)
+                    })
                 }
             }
             else
@@ -105,23 +115,28 @@ class AnswerViewController: UIViewController
         {
             if let results = try coreData.managedObjectContext.fetch(request) as? [NSManagedObject]
             {
-                questions = results as? [Question]
-                let question = questions?[0]
-                if (question?.correctNeeded)! < 4
+                questionData = results as? [Question]
+                let question = questionData?[0]
+                if (question?.correctNeeded)! != 0
                 {
-                    question?.correctNeeded = (question?.correctNeeded)! + 1
+                    question?.correctNeeded = (question?.correctNeeded)! - 1
                 }
                 coreData.saveContext()
                 if titlePageActive != true
                 {
-                    let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionTable") as! QuestionTableViewController
-                    self.navigationController?.pushViewController(questionTablePageView, animated: true)
+                    //let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionTable") as! QuestionTableViewController
+                    //self.navigationController?.pushViewController(questionTablePageView, animated: true)
+                    self.dismiss(animated: true, completion: { () -> Void in
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "hideCard"), object: nil)
+                    })
+                    
                     
                 }
                 else
                 {
-                    let homeTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "Home") as! HomeCollectionViewController
-                    self.navigationController?.pushViewController(homeTablePageView, animated: true)
+                    self.dismiss(animated: true, completion: { () -> Void in
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "backButton"), object: nil)
+                    })
                 }
             }
             else
@@ -140,7 +155,6 @@ class AnswerViewController: UIViewController
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
