@@ -14,12 +14,13 @@
 		551EE2671E1C08BB00352D8C /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EE2661E1C08BB00352D8C /* CoreData.swift */; };
 		551EE2841E1FC32400352D8C /* Subject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EE2801E1FC32400352D8C /* Subject+CoreDataClass.swift */; };
 		551EE2851E1FC32400352D8C /* Subject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EE2811E1FC32400352D8C /* Subject+CoreDataProperties.swift */; };
-		551EE2861E1FC32400352D8C /* Question+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EE2821E1FC32400352D8C /* Question+CoreDataClass.swift */; };
-		551EE2871E1FC32400352D8C /* Question+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 551EE2831E1FC32400352D8C /* Question+CoreDataProperties.swift */; };
 		552CDD511DEDD70600D10D44 /* QuestionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD501DEDD70600D10D44 /* QuestionTableViewController.swift */; };
 		552CDD531DEE053100D10D44 /* CreateQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552CDD521DEE053100D10D44 /* CreateQuestionViewController.swift */; };
 		5533F6FF1E14346A00DCE7C1 /* QuestionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5533F6FE1E14346A00DCE7C1 /* QuestionDetailViewController.swift */; };
 		5533F7011E15576B00DCE7C1 /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5533F7001E15576B00DCE7C1 /* AnswerViewController.swift */; };
+		554A6C4D1E311BAC00402929 /* LocalNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A6C4C1E311BAC00402929 /* LocalNotificationHelper.swift */; };
+		554A6C501E32482300402929 /* Question+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A6C4E1E32482300402929 /* Question+CoreDataClass.swift */; };
+		554A6C511E32482300402929 /* Question+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A6C4F1E32482300402929 /* Question+CoreDataProperties.swift */; };
 		55CC712A1DEC65AA007180AC /* SubjectChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC71291DEC65AA007180AC /* SubjectChoiceViewController.swift */; };
 		55CC712C1DEC6858007180AC /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC712B1DEC6858007180AC /* HomeCollectionViewController.swift */; };
 		55CC71301DEC745E007180AC /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CC712F1DEC745E007180AC /* HomeCollectionViewCell.swift */; };
@@ -28,7 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		550E466C1DE9EA2800C48958 /* iOSFact.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSFact.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		550E466C1DE9EA2800C48958 /* ByHeart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ByHeart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		550E466F1DE9EA2800C48958 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		550E46741DE9EA2800C48958 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		550E46791DE9EA2800C48958 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -37,12 +38,13 @@
 		551EE2661E1C08BB00352D8C /* CoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
 		551EE2801E1FC32400352D8C /* Subject+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Subject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		551EE2811E1FC32400352D8C /* Subject+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Subject+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		551EE2821E1FC32400352D8C /* Question+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Question+CoreDataClass.swift"; sourceTree = "<group>"; };
-		551EE2831E1FC32400352D8C /* Question+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Question+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		552CDD501DEDD70600D10D44 /* QuestionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionTableViewController.swift; sourceTree = "<group>"; };
 		552CDD521DEE053100D10D44 /* CreateQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateQuestionViewController.swift; sourceTree = "<group>"; };
 		5533F6FE1E14346A00DCE7C1 /* QuestionDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionDetailViewController.swift; sourceTree = "<group>"; };
 		5533F7001E15576B00DCE7C1 /* AnswerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
+		554A6C4C1E311BAC00402929 /* LocalNotificationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationHelper.swift; sourceTree = "<group>"; };
+		554A6C4E1E32482300402929 /* Question+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Question+CoreDataClass.swift"; path = "../Question+CoreDataClass.swift"; sourceTree = "<group>"; };
+		554A6C4F1E32482300402929 /* Question+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Question+CoreDataProperties.swift"; path = "../Question+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		55CC71291DEC65AA007180AC /* SubjectChoiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubjectChoiceViewController.swift; sourceTree = "<group>"; };
 		55CC712B1DEC6858007180AC /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
 		55CC712F1DEC745E007180AC /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -64,7 +66,7 @@
 		550E46631DE9EA2800C48958 = {
 			isa = PBXGroup;
 			children = (
-				550E466E1DE9EA2800C48958 /* iOSFact */,
+				550E466E1DE9EA2800C48958 /* ByHeart */,
 				550E466D1DE9EA2800C48958 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,15 +74,16 @@
 		550E466D1DE9EA2800C48958 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				550E466C1DE9EA2800C48958 /* iOSFact.app */,
+				550E466C1DE9EA2800C48958 /* ByHeart.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		550E466E1DE9EA2800C48958 /* iOSFact */ = {
+		550E466E1DE9EA2800C48958 /* ByHeart */ = {
 			isa = PBXGroup;
 			children = (
 				550E466F1DE9EA2800C48958 /* AppDelegate.swift */,
+				554A6C4C1E311BAC00402929 /* LocalNotificationHelper.swift */,
 				55CC71291DEC65AA007180AC /* SubjectChoiceViewController.swift */,
 				55CC712F1DEC745E007180AC /* HomeCollectionViewCell.swift */,
 				55CC712B1DEC6858007180AC /* HomeCollectionViewController.swift */,
@@ -93,22 +96,23 @@
 				551EE2661E1C08BB00352D8C /* CoreData.swift */,
 				551EE2801E1FC32400352D8C /* Subject+CoreDataClass.swift */,
 				551EE2811E1FC32400352D8C /* Subject+CoreDataProperties.swift */,
-				551EE2821E1FC32400352D8C /* Question+CoreDataClass.swift */,
-				551EE2831E1FC32400352D8C /* Question+CoreDataProperties.swift */,
+				554A6C4E1E32482300402929 /* Question+CoreDataClass.swift */,
+				554A6C4F1E32482300402929 /* Question+CoreDataProperties.swift */,
 				55E1D01F1E201D3E00146551 /* iOSFactModel.xcdatamodeld */,
 				550E46791DE9EA2800C48958 /* Assets.xcassets */,
 				55E1D0231E2107F200146551 /* Icons.xcassets */,
 				550E467E1DE9EA2800C48958 /* Info.plist */,
 			);
+			name = ByHeart;
 			path = iOSFact;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		550E466B1DE9EA2800C48958 /* iOSFact */ = {
+		550E466B1DE9EA2800C48958 /* ByHeart */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 550E46811DE9EA2800C48958 /* Build configuration list for PBXNativeTarget "iOSFact" */;
+			buildConfigurationList = 550E46811DE9EA2800C48958 /* Build configuration list for PBXNativeTarget "ByHeart" */;
 			buildPhases = (
 				550E46681DE9EA2800C48958 /* Sources */,
 				550E46691DE9EA2800C48958 /* Frameworks */,
@@ -118,9 +122,9 @@
 			);
 			dependencies = (
 			);
-			name = iOSFact;
+			name = ByHeart;
 			productName = iOSFact;
-			productReference = 550E466C1DE9EA2800C48958 /* iOSFact.app */;
+			productReference = 550E466C1DE9EA2800C48958 /* ByHeart.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -140,7 +144,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 550E46671DE9EA2800C48958 /* Build configuration list for PBXProject "iOSFact" */;
+			buildConfigurationList = 550E46671DE9EA2800C48958 /* Build configuration list for PBXProject "ByHeart" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -153,7 +157,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				550E466B1DE9EA2800C48958 /* iOSFact */,
+				550E466B1DE9EA2800C48958 /* ByHeart */,
 			);
 		};
 /* End PBXProject section */
@@ -180,17 +184,18 @@
 				551EE2851E1FC32400352D8C /* Subject+CoreDataProperties.swift in Sources */,
 				55CC71301DEC745E007180AC /* HomeCollectionViewCell.swift in Sources */,
 				552CDD511DEDD70600D10D44 /* QuestionTableViewController.swift in Sources */,
-				551EE2871E1FC32400352D8C /* Question+CoreDataProperties.swift in Sources */,
 				550E46701DE9EA2800C48958 /* AppDelegate.swift in Sources */,
 				551EE2841E1FC32400352D8C /* Subject+CoreDataClass.swift in Sources */,
 				5533F7011E15576B00DCE7C1 /* AnswerViewController.swift in Sources */,
 				551EE2671E1C08BB00352D8C /* CoreData.swift in Sources */,
 				5533F6FF1E14346A00DCE7C1 /* QuestionDetailViewController.swift in Sources */,
+				554A6C4D1E311BAC00402929 /* LocalNotificationHelper.swift in Sources */,
+				554A6C501E32482300402929 /* Question+CoreDataClass.swift in Sources */,
 				55E1D0211E201D3E00146551 /* iOSFactModel.xcdatamodeld in Sources */,
 				552CDD531DEE053100D10D44 /* CreateQuestionViewController.swift in Sources */,
 				55CC712A1DEC65AA007180AC /* SubjectChoiceViewController.swift in Sources */,
+				554A6C511E32482300402929 /* Question+CoreDataProperties.swift in Sources */,
 				55CC712C1DEC6858007180AC /* HomeCollectionViewController.swift in Sources */,
-				551EE2861E1FC32400352D8C /* Question+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,7 +343,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		550E46671DE9EA2800C48958 /* Build configuration list for PBXProject "iOSFact" */ = {
+		550E46671DE9EA2800C48958 /* Build configuration list for PBXProject "ByHeart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				550E467F1DE9EA2800C48958 /* Debug */,
@@ -347,7 +352,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		550E46811DE9EA2800C48958 /* Build configuration list for PBXNativeTarget "iOSFact" */ = {
+		550E46811DE9EA2800C48958 /* Build configuration list for PBXNativeTarget "ByHeart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				550E46821DE9EA2800C48958 /* Debug */,

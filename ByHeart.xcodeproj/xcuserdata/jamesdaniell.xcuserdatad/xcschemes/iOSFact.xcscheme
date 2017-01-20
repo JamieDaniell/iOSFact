@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "550E466B1DE9EA2800C48958"
-               BuildableName = "iOSFact.app"
-               BlueprintName = "iOSFact"
-               ReferencedContainer = "container:iOSFact.xcodeproj">
+               BuildableName = "ByHeart.app"
+               BlueprintName = "ByHeart"
+               ReferencedContainer = "container:ByHeart.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "550E466B1DE9EA2800C48958"
-            BuildableName = "iOSFact.app"
-            BlueprintName = "iOSFact"
-            ReferencedContainer = "container:iOSFact.xcodeproj">
+            BuildableName = "ByHeart.app"
+            BlueprintName = "ByHeart"
+            ReferencedContainer = "container:ByHeart.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "550E466B1DE9EA2800C48958"
-            BuildableName = "iOSFact.app"
-            BlueprintName = "iOSFact"
-            ReferencedContainer = "container:iOSFact.xcodeproj">
+            BuildableName = "ByHeart.app"
+            BlueprintName = "ByHeart"
+            ReferencedContainer = "container:ByHeart.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "550E466B1DE9EA2800C48958"
-            BuildableName = "iOSFact.app"
-            BlueprintName = "iOSFact"
-            ReferencedContainer = "container:iOSFact.xcodeproj">
+            BuildableName = "ByHeart.app"
+            BlueprintName = "ByHeart"
+            ReferencedContainer = "container:ByHeart.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

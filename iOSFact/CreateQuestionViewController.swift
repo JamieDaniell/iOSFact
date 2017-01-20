@@ -12,6 +12,7 @@ import CoreData
 
 class CreateQuestionViewController: UIViewController,UITextViewDelegate {
 
+    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var questionText: UITextView!
     @IBOutlet weak var answerText: UITextView!
     @IBOutlet weak var datePick: UIDatePicker!
@@ -35,6 +36,12 @@ class CreateQuestionViewController: UIViewController,UITextViewDelegate {
                     question.answerContent = answerText.text
                     question.correctNeeded = 0
                     question.examDate = datePick.date as NSDate?
+                    let currentDate = NSDate()
+                    var dateComponents = DateComponents()
+                    dateComponents.setValue(1, for: .day)
+                        //((daysBetween(start: Date() as Date ,end: datePick.date)) / 5)
+                    let x  = Calendar.current.date(byAdding: dateComponents as DateComponents, to: currentDate as Date)
+                    question.nextDate = x as NSDate?
                     let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Subject")
                     request.predicate = NSPredicate(format: "name = %@", questionSubject)
                     do
@@ -62,6 +69,10 @@ class CreateQuestionViewController: UIViewController,UITextViewDelegate {
             }
         }
     }
+    func daysBetween(start: Date, end: Date) -> Int
+    {
+        return Calendar.current.dateComponents([.day], from: start, to: end).day!
+    }
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -77,6 +88,11 @@ class CreateQuestionViewController: UIViewController,UITextViewDelegate {
         answerText.text = "Enter Answer"
         answerText.textColor = UIColor.lightGray
         // Do any additional setup after loading the view.
+        
+        view.backgroundColor = UIColor.clear
+        self.backView.layer.borderWidth = 2.0
+        self.backView.layer.borderColor = UIColor.lightGray.cgColor
+        self.backView.layer.cornerRadius = 10
     }
     func textViewDidBeginEditing(_ textView: UITextView)
     {

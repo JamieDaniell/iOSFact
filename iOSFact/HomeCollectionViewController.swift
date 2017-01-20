@@ -350,7 +350,7 @@ class HomeCollectionViewController: UICollectionViewController
                 deleteIsShowing = false
                 
             }
-            
+            userDidSwipeBackRight()
             
         }
         else
@@ -407,7 +407,7 @@ class HomeCollectionViewController: UICollectionViewController
         deleteIsShowing = false
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segue.identifier == "homeToQuestion"
         {
@@ -415,20 +415,25 @@ class HomeCollectionViewController: UICollectionViewController
             let destinationVC = segue.destination as! QuestionDetailViewController
             do
             {
+                // find all questions with a nextDate <= current date
                 let questionRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
-                let sortDescriptor = NSSortDescriptor(key: "correctNeeded" , ascending: true)
+                let sortDescriptor = NSSortDescriptor(key: "nextDate" , ascending: true)
                 let sortDescriptors = [sortDescriptor]
                 questionRequest.sortDescriptors = sortDescriptors
-                questionRequest.predicate = NSPredicate(format: "correctNeeded != %@", 0)
+                let currentDate = NSDate()
+                questionRequest.predicate = NSPredicate(format: "nextDate <= %@", currentDate)
                 
                 let questionResults = try coreData.managedObjectContext.fetch(questionRequest) as! [Question]
                 // ask the first question
                 // show question
-                currentQuestion = questionResults[0].questionContent!
-                destinationVC.content  = questionResults[0].questionContent
-                titlePageActive = true
-                let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionDetailViewController") as! QuestionDetailViewController
+                if !questionResults.isEmpty
+                {
+                    currentQuestion = questionResults[0].questionContent!
+                    destinationVC.content  = questionResults[0].questionContent
+                    titlePageActive = true
+                    let questionTablePageView = self.storyboard?.instantiateViewController(withIdentifier: "QuestionDetailViewController") as! QuestionDetailViewController
                 //self.navigationController?.pushViewController(questionTablePageView, animated: true)
+                }
                 
             }
             catch
@@ -437,7 +442,45 @@ class HomeCollectionViewController: UICollectionViewController
             }
         }
     }
+     */
 
+    @IBAction func askStack(_ sender: Any)
+    {
+        
+        let questionRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Question")
+        let sortDescriptor = NSSortDescriptor(key: "nextDate" , ascending: true)
+        let sortDescriptors = [sortDescriptor]
+        questionRequest.sortDescriptors = sortDescriptors
+        let currentDate = NSDate()
+        questionRequest.predicate = NSPredicate(format: "nextDate <= %@", currentDate)
+        do
+        {
+            let questionResults = try coreData.managedObjectContext.fetch(questionRequest) as! [Question]
+            // ask the first question
+            // show question
+            if !questionResults.isEmpty
+            {
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let questionDetailViewController = storyBoard.instantiateViewController(withIdentifier: "QuestionDetailViewController") as! QuestionDetailViewController
+                currentQuestion = questionResults[0].questionContent!
+                questionDetailViewController.content  = questionResults[0].questionContent
+                titlePageActive = true
+                
+                self.present(questionDetailViewController, animated:true, completion:nil)
+            }
+            else
+            {
+                let alert = UIAlertController(title: "No Questions Due Today", message: "Come back tomorrow or select a subject!", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        catch
+        {
+            
+            print("Error in ask stack")
+        }
+    }
 
 
 

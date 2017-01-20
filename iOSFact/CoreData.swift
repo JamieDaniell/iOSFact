@@ -24,7 +24,8 @@ class CoreData
         return NSManagedObjectModel(contentsOf: modelURL!)!
     }()
     
-    lazy var persistenceStoreCoordinator: NSPersistentStoreCoordinator = {
+    lazy var persistenceStoreCoordinator: NSPersistentStoreCoordinator =
+        {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let url = self.applicationDocumentsDirectory.appendingPathComponent(self.model)
         do
